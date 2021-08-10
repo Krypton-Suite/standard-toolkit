@@ -22,16 +22,32 @@ namespace Krypton.Toolkit
         private static readonly ImageList _checkBoxList;
         private static readonly ImageList _galleryButtonList;
         private static readonly Image[] _radioButtonArray;
-        private static readonly Image _blueDropDownButton = Resources.BlueDropDownButton;
-        private static readonly Image _blueCloseA = Resources.BlueButtonCloseA;
-        private static readonly Image _blueCloseI = Resources.BlueButtonCloseI;
-        private static readonly Image _blueMaxA = Resources.BlueButtonMaxA;
-        private static readonly Image _blueMaxI = Resources.BlueButtonMaxI;
-        private static readonly Image _blueMinA = Resources.BlueButtonMinA;
-        private static readonly Image _blueMinI = Resources.BlueButtonMinI;
-        private static readonly Image _blueRestoreA = Resources.BlueButtonRestoreA;
-        private static readonly Image _blueRestoreI = Resources.BlueButtonRestoreI;
-        private static readonly Image _contextMenuSubMenu = Resources.BlueContextMenuSub;
+        private static readonly Image _blueDropDownButton = Properties.Resources.BlueDropDownButton;
+
+        private static readonly Image _blueCloseNormal =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonCloseHover;
+
+        private static readonly Image _blueCloseDisabled =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonCloseDisabled;
+
+        private static readonly Image _blueMaximiseNormal =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonMaxHover;
+
+        private static readonly Image _blueMaximiseDisabled =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonMaxDisabled;
+
+        private static readonly Image _blueMinimiseNormal =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonMinHover;
+
+        private static readonly Image _blueMinimiseDisabled =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonMinDisabled;
+
+        private static readonly Image _blueRestoreNormal =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonRestoreHover;
+
+        private static readonly Image _blueRestoreDisabled =
+            Resources.Office2007ControlBoxResources.Office2007BlueControlBoxButtonRestoreDisabled;
+        private static readonly Image _contextMenuSubMenu = Properties.Resources.BlueContextMenuSub;
         private static readonly Color[] _trackBarColors = { Color.FromArgb(116, 150, 194),      // Tick marks
                                                                         Color.FromArgb(116, 150, 194),      // Top track
                                                                         Color.FromArgb(152, 190, 241),      // Bottom track
@@ -263,22 +279,22 @@ namespace Krypton.Toolkit
                 ImageSize = new Size(13, 13),
                 ColorDepth = ColorDepth.Depth24Bit
             };
-            _checkBoxList.Images.AddStrip(Resources.CBSparkle);
+            _checkBoxList.Images.AddStrip(Properties.Resources.CBSparkle);
             _galleryButtonList = new ImageList
             {
                 ImageSize = new Size(13, 7),
                 ColorDepth = ColorDepth.Depth24Bit,
                 TransparentColor = Color.Magenta
             };
-            _galleryButtonList.Images.AddStrip(Resources.GalleryBlue);
-            _radioButtonArray = new Image[]{Resources.RBSparkleD,
-                                            Resources.RBSparkleN,
-                                            Resources.RBSparkleT,
-                                            Resources.RBSparkleP,
-                                            Resources.RBSparkleDC,
-                                            Resources.RBSparkleNC,
-                                            Resources.RBSparkleTC,
-                                            Resources.RBSparklePC};
+            _galleryButtonList.Images.AddStrip(Properties.Resources.GalleryBlue);
+            _radioButtonArray = new Image[]{Properties.Resources.RBSparkleD,
+                                            Properties.Resources.RBSparkleN,
+                                            Properties.Resources.RBSparkleT,
+                                            Properties.Resources.RBSparkleP,
+                                            Properties.Resources.RBSparkleDC,
+                                            Properties.Resources.RBSparkleNC,
+                                            Properties.Resources.RBSparkleTC,
+                                            Properties.Resources.RBSparklePC};
         }
 
         /// <summary>
@@ -346,16 +362,16 @@ namespace Krypton.Toolkit
             switch (style)
             {
                 case PaletteButtonSpecStyle.FormClose:
-                    return state == PaletteState.Disabled ? _blueCloseI : _blueCloseA;
+                    return state == PaletteState.Disabled ? _blueCloseDisabled : _blueCloseNormal;
 
                 case PaletteButtonSpecStyle.FormMin:
-                    return state == PaletteState.Disabled ? _blueMinI : _blueMinA;
+                    return state == PaletteState.Disabled ? _blueMinimiseDisabled : _blueMinimiseNormal;
 
                 case PaletteButtonSpecStyle.FormMax:
-                    return state == PaletteState.Disabled ? _blueMaxI : _blueMaxA;
+                    return state == PaletteState.Disabled ? _blueMaximiseDisabled : _blueMaximiseNormal;
 
                 case PaletteButtonSpecStyle.FormRestore:
-                    return state == PaletteState.Disabled ? _blueRestoreI : _blueRestoreA;
+                    return state == PaletteState.Disabled ? _blueRestoreDisabled : _blueRestoreNormal;
 
                 default:
                     return base.GetButtonSpecImage(style, state);
