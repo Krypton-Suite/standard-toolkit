@@ -261,6 +261,17 @@ namespace Krypton.Toolkit
         }
         #endregion
 
+        #region ScrollBars
+
+        public Color BackgroundColor { get; set; }
+        public Color BorderColor { get; set; }
+        public Color ThumbColor { get; set; }
+        public Color HoverThumbColor { get; set; }
+        public Color PressedThumbColor { get; set; }
+        public Color ArrowColor { get; set; }
+
+        #endregion
+
         #region Metric
 
         /// <summary>
