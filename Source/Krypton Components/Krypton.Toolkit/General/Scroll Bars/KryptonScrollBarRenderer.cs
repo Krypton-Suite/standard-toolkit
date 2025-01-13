@@ -47,7 +47,7 @@ namespace Krypton.Toolkit
         /// <summary>
         /// The Border colors.
         /// </summary>
-        public static Color[] BorderColors = new Color[2];
+        public static Color[] BorderColors = { Color.DarkGray }; // new Color[2];
 
         /// <summary>
         /// The Grip colors.
@@ -70,7 +70,7 @@ namespace Krypton.Toolkit
 
         public static void InitColors()
         {
-
+            /*
             // add Palette Handler
             //if (_palette != null)
             //{
@@ -132,7 +132,7 @@ namespace Krypton.Toolkit
              * | |-----------------------------------------| |
              * |                                             |
              * ----------------------------------------------- (15,17)
-             */
+             *
 
             // hot state
             _arrowColors[0, 0] = _palette.GetBackColor1(PaletteBackStyle.ButtonStandalone, PaletteState.Normal);//Color.FromArgb(223, 236, 252);
@@ -188,7 +188,7 @@ namespace Krypton.Toolkit
             //Grip colors
             GripColors[0] = _palette.ColorTable.GripLight;
             GripColors[1] = _palette.ColorTable.GripDark;
-
+            */
         }
         #endregion
 
@@ -261,6 +261,19 @@ namespace Krypton.Toolkit
             {
                 DrawTrackHorizontal(g, rect);
             }
+
+            // DEBUG
+            // Fill the track area
+            using (Brush trackBrush = new SolidBrush(Color.LightGray)) // Example color
+            {
+                g.FillRectangle(trackBrush, rect);
+            }
+
+            // DEBUG: Highlight the track rectangle bounds with a red border
+            using (Pen debugPen = new Pen(Color.Red, 1)) // Red for debugging
+            {
+                g.DrawRectangle(debugPen, rect);
+            }
         }
 
         /// <summary>
@@ -296,6 +309,19 @@ namespace Krypton.Toolkit
             {
                 DrawThumbHorizontal(g, rect, state);
             }
+
+            // DEBUG
+            // Fill the thumb area
+            using (Brush thumbBrush = new SolidBrush(Color.Gray)) // Example color
+            {
+                g.FillRectangle(thumbBrush, rect);
+            }
+
+            // DEBUG: Highlight the thumb rectangle bounds with a blue border
+            using (Pen debugPen = new Pen(Color.Blue, 1)) // Blue for debugging
+            {
+                g.DrawRectangle(debugPen, rect);
+            }
         }
 
         /// <summary>
@@ -309,7 +335,7 @@ namespace Krypton.Toolkit
            Rectangle rect,
            ScrollBarOrientation orientation)
         {
-            if (g == null)
+            /*if (g == null)
             {
                 throw new ArgumentNullException(nameof(g));
             }
@@ -340,7 +366,32 @@ namespace Krypton.Toolkit
             );
 
             // draw grip image
-            g.DrawImage(gripImage, r, 0, 0, r.Width, r.Height, GraphicsUnit.Pixel, attr);
+            g.DrawImage(gripImage, r, 0, 0, r.Width, r.Height, GraphicsUnit.Pixel, attr);*/
+
+            // DEBUG
+            // Draw grip for thumb if necessary (simplified for debugging)
+            if (orientation == ScrollBarOrientation.Vertical)
+            {
+                using (Pen gripPen = new Pen(Color.DarkGray, 1))
+                {
+                    int gripX = rect.X + rect.Width / 2;
+                    for (int y = rect.Y + 4; y < rect.Bottom - 4; y += 4)
+                    {
+                        g.DrawLine(gripPen, gripX - 2, y, gripX + 2, y); // Vertical grip lines
+                    }
+                }
+            }
+            else
+            {
+                using (Pen gripPen = new Pen(Color.DarkGray, 1))
+                {
+                    int gripY = rect.Y + rect.Height / 2;
+                    for (int x = rect.X + 4; x < rect.Right - 4; x += 4)
+                    {
+                        g.DrawLine(gripPen, x, gripY - 2, x, gripY + 2); // Horizontal grip lines
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -402,7 +453,7 @@ namespace Krypton.Toolkit
            bool arrowUp,
            ScrollBarOrientation orientation)
         {
-            if (g == null)
+            /*if (g == null)
             {
                 throw new ArgumentNullException(nameof(g));
             }
@@ -420,6 +471,39 @@ namespace Krypton.Toolkit
             else
             {
                 DrawArrowButtonHorizontal(g, rect, state, arrowUp);
+            }*/
+
+            // DEBUG
+            // Fill the arrow button
+            using (Brush arrowBrush = new SolidBrush(Color.DarkGray)) // Example color
+            {
+                g.FillRectangle(arrowBrush, rect);
+            }
+
+            // DEBUG: Highlight the arrow button rectangle bounds with a green border
+            using (Pen debugPen = new Pen(Color.Green, 1)) // Green for debugging
+            {
+                g.DrawRectangle(debugPen, rect);
+            }
+
+            // Draw arrow icon inside the button
+            using (Pen arrowPen = new Pen(Color.Black, 1))
+            {
+                Point[] points;
+                if (orientation == ScrollBarOrientation.Vertical)
+                {
+                    points = arrowUp
+                        ? new Point[] { new Point(rect.Left + 4, rect.Bottom - 6), new Point(rect.Right - 4, rect .Bottom - 6), new Point(rect.Left + rect.Width / 2, rect.Top + 6) }
+                        : new Point[] { new Point(rect.Left + 4, rect.Top + 6), new Point(rect.Right - 4, rect.Top + 6), new Point(rect.Left + rect.Width / 2, rect.Bottom - 6) };
+                }
+                else
+                {
+                    points = arrowUp
+                        ? new Point[] { new Point(rect.Right - 6, rect.Top + 4), new Point(rect.Right - 6, rect.Bottom - 4), new Point(rect.Left + 6, rect.Top + rect.Height / 2) }
+                        : new Point[] { new Point(rect.Left + 6, rect.Top + 4), new Point(rect.Left + 6, rect.Bottom - 4), new Point(rect.Right - 6, rect.Top + rect.Height / 2) };
+                }
+
+                g.DrawPolygon(arrowPen, points);
             }
         }
 
@@ -944,7 +1028,7 @@ namespace Krypton.Toolkit
 
         #endregion
 
-        #region ... Krypton ...
+        #region Krypton Renderer Stuff
 
         /*
         //Krypton Palette Events

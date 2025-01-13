@@ -38,8 +38,9 @@ namespace TestForm
         private void InitializeComponent()
         {
             this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
-            this.kbtnExit = new Krypton.Toolkit.KryptonButton();
             this.kcmbBorderStyle = new Krypton.Toolkit.KryptonComboBox();
+            this.kbtnExit = new Krypton.Toolkit.KryptonButton();
+            this.kryptonTaskDialog1 = new Krypton.Toolkit.KryptonTaskDialog();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
             this.kryptonPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kcmbBorderStyle)).BeginInit();
@@ -52,19 +53,8 @@ namespace TestForm
             this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kryptonPanel1.Location = new System.Drawing.Point(0, 0);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(804, 454);
+            this.kryptonPanel1.Size = new System.Drawing.Size(806, 448);
             this.kryptonPanel1.TabIndex = 0;
-            // 
-            // kbtnExit
-            // 
-            this.kbtnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.kbtnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.kbtnExit.Location = new System.Drawing.Point(702, 417);
-            this.kbtnExit.Name = "kbtnExit";
-            this.kbtnExit.Size = new System.Drawing.Size(90, 25);
-            this.kbtnExit.TabIndex = 39;
-            this.kbtnExit.Values.Text = "Exit";
-            this.kbtnExit.Click += new System.EventHandler(this.kbtnExit_Click);
             // 
             // kcmbBorderStyle
             // 
@@ -73,17 +63,47 @@ namespace TestForm
             this.kcmbBorderStyle.IntegralHeight = false;
             this.kcmbBorderStyle.Location = new System.Drawing.Point(159, 107);
             this.kcmbBorderStyle.Name = "kcmbBorderStyle";
-            this.kcmbBorderStyle.Size = new System.Drawing.Size(270, 21);
+            this.kcmbBorderStyle.Size = new System.Drawing.Size(270, 22);
+            this.kcmbBorderStyle.StateCommon.ComboBox.ArrowColor = System.Drawing.Color.Empty;
+            this.kcmbBorderStyle.StateCommon.ComboBox.BackgroundColor = System.Drawing.Color.Empty;
+            this.kcmbBorderStyle.StateCommon.ComboBox.BorderColor = System.Drawing.Color.Empty;
             this.kcmbBorderStyle.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.kcmbBorderStyle.StateCommon.ComboBox.HoverThumbColor = System.Drawing.Color.Empty;
+            this.kcmbBorderStyle.StateCommon.ComboBox.PressedThumbColor = System.Drawing.Color.Empty;
+            this.kcmbBorderStyle.StateCommon.ComboBox.ThumbColor = System.Drawing.Color.Empty;
             this.kcmbBorderStyle.TabIndex = 40;
             this.kcmbBorderStyle.SelectedIndexChanged += new System.EventHandler(this.kcmbBorderStyle_SelectedIndexChanged);
+            // 
+            // kbtnExit
+            // 
+            this.kbtnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.kbtnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.kbtnExit.Location = new System.Drawing.Point(704, 411);
+            this.kbtnExit.Name = "kbtnExit";
+            this.kbtnExit.Size = new System.Drawing.Size(90, 25);
+            this.kbtnExit.TabIndex = 39;
+            this.kbtnExit.Values.DropDownArrowColor = System.Drawing.Color.Empty;
+            this.kbtnExit.Values.Text = "Exit";
+            this.kbtnExit.Click += new System.EventHandler(this.kbtnExit_Click);
+            // 
+            // kryptonTaskDialog1
+            // 
+            this.kryptonTaskDialog1.CheckboxText = null;
+            this.kryptonTaskDialog1.Content = null;
+            this.kryptonTaskDialog1.DefaultRadioButton = null;
+            this.kryptonTaskDialog1.FooterHyperlink = null;
+            this.kryptonTaskDialog1.FooterText = null;
+            this.kryptonTaskDialog1.MainInstruction = null;
+            this.kryptonTaskDialog1.TextExtra = "Ctrl+C to copy";
+            this.kryptonTaskDialog1.UseNativeOSIcons = false;
+            this.kryptonTaskDialog1.WindowTitle = null;
             // 
             // FormBorderTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.kbtnExit;
-            this.ClientSize = new System.Drawing.Size(804, 454);
+            this.ClientSize = new System.Drawing.Size(806, 448);
             this.Controls.Add(this.kryptonPanel1);
             this.Name = "FormBorderTest";
             this.Text = "FormBorderTest";
@@ -101,5 +121,6 @@ namespace TestForm
         private Krypton.Toolkit.KryptonPanel kryptonPanel1;
         private Krypton.Toolkit.KryptonButton kbtnExit;
         private Krypton.Toolkit.KryptonComboBox kcmbBorderStyle;
+        private KryptonTaskDialog kryptonTaskDialog1;
     }
 }

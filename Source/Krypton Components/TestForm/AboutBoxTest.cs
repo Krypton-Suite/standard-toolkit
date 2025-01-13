@@ -30,7 +30,7 @@ namespace TestForm
 
         private void kbtnShow_Click(object sender, EventArgs e)
         {
-            KryptonAboutBoxData aboutBoxData = new KryptonAboutBoxData()
+             KryptonAboutBoxData aboutBoxData = new KryptonAboutBoxData()
             {
                 ApplicationName = kryptonTextBox2.Text,
                 CurrentAssembly = Assembly.LoadFile(kryptonTextBox1.Text),
