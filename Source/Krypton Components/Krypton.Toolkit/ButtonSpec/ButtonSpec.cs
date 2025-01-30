@@ -47,6 +47,7 @@ namespace Krypton.Toolkit
         private PaletteButtonOrientation _orientation;
         private PaletteRelativeEdgeAlign _edge;
         private readonly CheckButtonImageStates _imageStates;
+        private RightToLeft _rightToLeft;
 
         #endregion
 
@@ -305,6 +306,28 @@ namespace Krypton.Toolkit
         }
         private bool ShouldSerializeToolTipImage() => ToolTipImage != null;
         private void ResetToolTipImage() => ToolTipImage = null;
+        #endregion
+
+        #region RightToLeft
+
+        public RightToLeft RightToLeft
+        {
+            get => _rightToLeft;
+            set
+            {
+                if (_rightToLeft != value)
+                {
+                    _rightToLeft = value;
+                    UpdateEdgeAlignment();
+                }
+            }
+        }
+
+        private void UpdateEdgeAlignment()
+        {
+            Edge = _rightToLeft == RightToLeft.Yes ? PaletteRelativeEdgeAlign.Near : PaletteRelativeEdgeAlign.Far;
+        }
+
         #endregion
 
         #region ToolTipImageTransparentColor

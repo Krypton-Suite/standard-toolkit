@@ -29,6 +29,8 @@ namespace Krypton.Toolkit
         internal static bool _globalUseKryptonFileDialogs = true;
         private static Font? _baseFont;
 
+        private static RightToLeft _globalRightToLeft = RightToLeft.Inherit;
+
         // Initialize the default modes
 
         // Initialize instances to match the default modes
@@ -147,6 +149,11 @@ namespace Krypton.Toolkit
         [Category(@"Property Changed")]
         [Description(@"Occurs when the value of the GlobalUseThemeFormChromeBorderWidth property is changed.")]
         public static event EventHandler? GlobalUseThemeFormChromeBorderWidthChanged;
+
+        [Category(@"Property Changed")]
+        [Description(@"Occurs when the value of the GlobalRightToLeft property is changed.")]
+        public static event EventHandler? GlobalRightToLeftChanged;
+
         #endregion
 
         #region Identity
@@ -607,6 +614,24 @@ namespace Krypton.Toolkit
             return (PaletteMode)mode;
         }
 
+        /// <summary>Global RightToLeft setting for all Krypton controls.</summary>
+        [Category("GlobalSettings")]
+        [Description("Global RightToLeft setting for all Krypton controls.")]
+        [DefaultValue(RightToLeft.Inherit)]
+        public RightToLeft GlobalRightToLeft
+        {
+            get => _globalRightToLeft;
+
+            set
+            {
+                if (_globalRightToLeft != value)
+                {
+                    _globalRightToLeft = value;
+                    OnGlobalRightToLeftChanged(EventArgs.Empty);
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the single instance of the professional system palette.
         /// </summary>
@@ -852,6 +877,8 @@ namespace Krypton.Toolkit
         /// </summary>
         public static PaletteVisualStudio2010Microsoft365Variation PaletteVisualStudio2010Microsoft365Variation => _paletteVisualStudio2010Microsoft365Variation ??= new PaletteVisualStudio2010Microsoft365Variation();
 
+        public static RightToLeft GlobalRightToLeftMode => _globalRightToLeft;
+
         //public static PaletteBase CustomPaletteBase => _customPalette ??= new PaletteBase ();
 
         /// <summary>
@@ -1050,6 +1077,32 @@ namespace Krypton.Toolkit
             UpdatePaletteImages(CurrentGlobalPaletteMode);
 
             GlobalPaletteChanged?.Invoke(null, e);
+        }
+
+        private static void OnGlobalRightToLeftChanged(EventArgs e)
+        {
+            // Raise the event to notify that the global RightToLeft setting has changed
+            GlobalRightToLeftChanged?.Invoke(null, e);
+
+            // Apply the new RightToLeft setting to all Krypton controls
+            ApplyRightToLeftToAllControls();
+        }
+
+        private static void ApplyRightToLeftToAllControls()
+        {
+            foreach (Control control in Application.OpenForms.Cast<Form>().SelectMany(form => form.Controls.Cast<Control>()))
+            {
+                ApplyRightToLeft(control);
+            }
+        }
+
+        private static void ApplyRightToLeft(Control control)
+        {
+            control.RightToLeft = _globalRightToLeft;
+            foreach (Control childControl in control.Controls)
+            {
+                ApplyRightToLeft(childControl);
+            }
         }
 
         private static void UpdatePaletteImages(PaletteMode paletteMode)

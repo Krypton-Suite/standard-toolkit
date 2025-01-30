@@ -218,6 +218,11 @@ namespace Krypton.Toolkit
             // #1979 Temporary fix
             base.PaletteChanged += (s, e) => _internalKryptonPanel.PaletteMode = PaletteMode;
             // END #1979 Temporary fix
+
+            KryptonManager.GlobalRightToLeftChanged += OnGlobalRightToLeftChanged;
+
+            ApplyRightToLeft(KryptonManager.GlobalRightToLeftMode);
+            ApplyRightToLeftToButtonSpecs();
         }
 
         private float GetDpiFactor()
@@ -237,6 +242,9 @@ namespace Krypton.Toolkit
         {
             if (disposing)
             {
+                // Unsubscribe from the GlobalRightToLeftChanged event
+                KryptonManager.GlobalRightToLeftChanged -= OnGlobalRightToLeftChanged;
+
                 // Remove ant showing tooltip
                 OnCancelToolTip(this, EventArgs.Empty);
 
@@ -1059,6 +1067,49 @@ namespace Krypton.Toolkit
             }
         }
 
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Paint">Paint</see> event.</summary>
+        /// <param name="e">A <see cref="T:System.Windows.Forms.PaintEventArgs">PaintEventArgs</see> that contains the event data.</param>
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            if (RightToLeft == RightToLeft.Yes ||
+                (RightToLeft == RightToLeft.Inherit && Parent?.RightToLeft == RightToLeft.Yes))
+            {
+                // Reverse the order of the controls
+                e.Graphics.TranslateTransform(Width, 0);
+
+                e.Graphics.ScaleTransform(-1, 1);
+            }
+
+            base.OnPaint(e);
+
+            if (RightToLeft == RightToLeft.Yes ||
+                (RightToLeft == RightToLeft.Inherit && Parent?.RightToLeft == RightToLeft.Yes))
+            {
+                // Reverse the order of the controls
+                e.Graphics.ResetTransform();
+            }
+        }
+
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Control.Layout">Layout</see> event.</summary>
+        /// <param name="levent">The event data.</param>
+        protected override void OnLayout(LayoutEventArgs? levent)
+        {
+            base.OnLayout(levent);
+
+            // If the form is right-to-left, then reverse the order of the controls
+            if (RightToLeft == RightToLeft.Yes ||
+                (RightToLeft == RightToLeft.Inherit && Parent?.RightToLeft == RightToLeft.Yes))
+            {
+                // Reverse the order of the controls
+                foreach (Control control in Controls)
+                {
+                    control.Left = Width - control.Right;
+                }
+
+                
+            }
+        }
+
         /// <summary>
         /// Raises the Load event.
         /// </summary>
@@ -1193,6 +1244,13 @@ namespace Krypton.Toolkit
         protected override IntPtr WindowChromeHitTest(Point pt)
         {
             Point originalPt = pt;
+
+            // If the form is right-to-left, then convert the point to be relative to the right edge
+            if (RightToLeft == RightToLeft.Yes || (RightToLeft == RightToLeft.Inherit && Parent?.RightToLeft == RightToLeft.Yes))
+            {
+                pt.X = Width - pt.X;
+            }
+
             if (CustomCaptionArea.Contains(pt))
             {
                 return new IntPtr(PI.HT.CAPTION);
@@ -1343,6 +1401,12 @@ namespace Krypton.Toolkit
 
                 // Convert to window coordinates
                 Point windowPoint = ScreenToWindow(screenPoint);
+
+                // Convert to view coordinates
+                if (RightToLeft == RightToLeft.Yes || (RightToLeft == RightToLeft.Inherit && Parent?.RightToLeft == RightToLeft.Yes))
+                {
+                    windowPoint.X = Width - windowPoint.X;
+                }
 
                 // Is the mouse over the Application icon image area
                 if (_drawContent.ImageRectangle(context).Contains(windowPoint))
@@ -1553,9 +1617,7 @@ namespace Krypton.Toolkit
                     }
 
                     // Is a layout required?
-                    if (NeedLayout
-                        || (GetDefinedIcon() != _cacheIcon)
-                        )
+                    if (NeedLayout || (GetDefinedIcon() != _cacheIcon))
                     {
                         Rectangle realWindowRectangle = RealWindowRectangle;
                         // Ask the view to perform a layout
@@ -1874,6 +1936,51 @@ namespace Krypton.Toolkit
                     break;
             }
         }
+
+        private void ApplyRightToLeftToButtonSpecs()
+        {
+            if (RightToLeft == RightToLeft.Yes || (RightToLeft == RightToLeft.Inherit && Parent?.RightToLeft == RightToLeft.Yes))
+            {
+                foreach (ButtonSpec spec in ButtonSpecs)
+                {
+                    spec.Edge = PaletteRelativeEdgeAlign.Near;
+                }
+            }
+            else
+            {
+                foreach (ButtonSpec spec in ButtonSpecs)
+                {
+                    spec.Edge = PaletteRelativeEdgeAlign.Far;
+                }
+            }
+        }
+
+
+        private void OnGlobalRightToLeftChanged(object? sender, EventArgs e)
+        {
+            ApplyRightToLeft(KryptonManager.GlobalRightToLeftMode);
+
+            ApplyRightToLeftToButtonSpecs();
+        }
+
+        private void ApplyRightToLeft(RightToLeft rightToLeft)
+        {
+            this.RightToLeft = rightToLeft;
+            foreach (Control control in Controls)
+            {
+                ApplyRightToLeftToControl(control, rightToLeft);
+            }
+        }
+
+        private void ApplyRightToLeftToControl(Control control, RightToLeft rightToLeft)
+        {
+            control.RightToLeft = rightToLeft;
+            foreach (Control childControl in control.Controls)
+            {
+                ApplyRightToLeftToControl(childControl, rightToLeft);
+            }
+        }
+
         #endregion
 
         #region Drop Shadow Methods
